@@ -1,0 +1,123 @@
+﻿<Window
+    x:Class="em.ServicesPages.SankeyWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:kantCharts="clr-namespace:Kant.Wpf.Controls.Chart;assembly=Kant.Wpf.Controls.Chart.SankeyDiagram"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pagesservices="clr-namespace:em.ServicesPages"
+    Title="Диаграмма Санкея для энергопотоков, тыс.руб."
+    Width="800"
+    Height="Auto"
+    MinHeight="300"
+    Topmost="True"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <SolidColorBrush
+            x:Key="SankeyHighlightBrush"
+            Opacity="0.65"
+            Color="Tomato" />
+        <Style x:Key="SankeyHighlightLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="DimGray" />
+            <Setter Property="Margin" Value="10,0" />
+        </Style>
+    </Window.Resources>
+
+    <Border BorderBrush="Gray" BorderThickness="3">
+
+        <Grid Margin="0,0,0,0" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="*" />
+                <RowDefinition x:Name="rowTotal" Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF149EA0" />
+            </Grid.Resources>
+
+            <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        x:Name="ChartTittle"
+                        Margin="15,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="DemiBold" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button
+                            x:Name="btnScreenTable"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            Click="btnScreen_Click"
+                            Content=" &#xE722; "
+                            FontSize="22"
+                            ToolTip="Копирование данных таблицы в буфер обмена" Cursor="Hand" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid
+                x:Name="grid"
+                Grid.Row="1"
+                Background="White">
+                <Border
+                    x:Name="DiagramArea"
+                    Grid.Row="0"
+                    Margin="20,20,20,50">
+                    <kantCharts:SankeyDiagram
+                        x:Name="diagram"
+                        Datas="{Binding SankeyDatas}"
+                        HighlightBrush="{StaticResource SankeyHighlightBrush}"
+                        HighlightLabelStyle="{StaticResource SankeyHighlightLabelStyle}"
+                        HighlightLink="{Binding HighlightSankeyLink}"
+                        HighlightMode="{Binding SankeyHighlightMode}"
+                        HighlightNode="{Binding HighlightSankeyNode}"
+                        HighlightOpacity="0.95"
+                        LabelStyle="{Binding SankeyLabelStyle}"
+                        LinkCurvature="{Binding SankeyLinkCurvature}"
+                        LoweredOpacity="0.45"
+                        NodeBrush="DarkGray"
+                        NodeBrushes="{Binding SankeyNodeBrushes}"
+                        NodeGap="15"
+                        NodeThickness="25"
+                        SankeyFlowDirection="{Binding SankeyFlowDirection}"
+                        ShowLabels="{Binding SankeyShowLabels}"
+                        ToolTipTemplate="{Binding SankeyToolTipTemplate}"
+                        UsePallette="NodesLinks" />
+                </Border>
+                <Slider
+                    x:Name="Slider"
+                    Grid.Row="1"
+                    Width="100"
+                    Margin="15,0,0,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Maximum="20"
+                    Minimum="0"
+                    Style="{StaticResource MaterialDesignDiscreteSlider}"
+                    TickFrequency="2"
+                    TickPlacement="BottomRight"
+                    Visibility="{Binding SliderVisible}"
+                    Value="{Binding SliderValue, Mode=TwoWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    Margin="112,0,0,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    FontSize="11"
+                    Text="{Binding SliderValueTxt}"
+                    Visibility="{Binding SliderVisible}" />
+
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,44 @@
+﻿<Application x:Class="em.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:em"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Bluegrey.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Amber.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Colors/white.xaml" />-->
+                <!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Colors/material.xaml" />-->
+                <!--<ResourceDictionary Source="pack://application:,,,/LiveCharts.Wpf;component/Themes/Colors/metro.xaml" />-->
+                <ResourceDictionary Source="Resources/LiveChartStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <ControlTemplate x:Key="SankeyToolTipTemplate" TargetType="ToolTip">
+                <Border
+                    Padding="5"
+                    Background="White"
+                    BorderBrush="Black"
+                    BorderThickness="1">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="10"
+                        Foreground="Black">
+                        <Run Text="{Binding FromNode.Name}" />
+                        <Run Text=" -&gt; " />
+                        <Run Text="{Binding ToNode.Name}" />
+                        <Run Text=": " />
+                        <Run Text="{Binding Weight}" /></TextBlock>
+                </Border>
+            </ControlTemplate>
+            <Style x:Key="SankeyLabelStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Foreground" Value="Black" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

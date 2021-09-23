@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="em.MenuPages.MonthMonitor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:em"
+             mc:Ignorable="d" 
+             d:DesignHeight="1450" d:DesignWidth="1500" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="920"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{StaticResource PrimaryHueMidBrush}" Margin="10,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock 
+                    x:Name="FormCaption"
+                    VerticalAlignment="Bottom"
+                    Margin="15,0,0,8"
+                    Foreground="White"
+                    Style="{StaticResource MaterialDesignHeadline5TextBlock}" 
+                    Text="Месячные отчёты"/>
+                <UserControl x:Name="FilterDatePanel" Margin="35,0,0,7" VerticalAlignment="Bottom" />
+                <UserControl x:Name="FilterCCPanel" Margin="20,0,0,7" VerticalAlignment="Bottom"/>
+                <UserControl x:Name="FilterERPanel" Margin="20,0,0,7" VerticalAlignment="Bottom"/>
+                <StackPanel
+                    Orientation="Horizontal"
+                    Margin="20,0,0,7" 
+                    VerticalAlignment="Bottom"
+                    Visibility="Visible">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Foreground="AntiqueWhite"
+                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                        Text="Тип" />
+                    <TextBox
+                        x:Name="PopupTypesCaption"
+                        Margin="0,0,-5,0"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        FontSize="15"
+                        FontWeight="DemiBold"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignComboBoxEditableTextBox}"
+                        Text="все" Cursor="IBeam" />
+                    <materialDesign:PopupBox
+                        x:Name="PopupBox"
+                        Width="24"
+                        Foreground="White"
+                        IsPopupOpen="{Binding PopupIsOpen, Mode=TwoWay}"
+                        PopupHorizontalOffset="{Binding ElementName=PopupBox, Path=ActualWidth }"
+                        StaysOpen="True">
+                        <StackPanel
+                            Margin="15,0"
+                            Orientation="Horizontal">
+                            <ListBox Name="TypesList" Padding="20" Style="{StaticResource MaterialDesignListBox}" FontSize="14" SelectionChanged="TypesList_SelectionChanged">
+                                <ListBoxItem >
+                                    <TextBlock Text="все" Height="25"/>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <TextBlock Text="на производство" Height="25"/>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <TextBlock Text="общецеховые" Height="25"/>
+                                </ListBoxItem>
+                            </ListBox>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </StackPanel>
+                <Button 
+                    x:Name="BtnFilter"
+                    Style="{StaticResource MaterialDesignFlatButton}" 
+                    Foreground="White"
+                    VerticalAlignment="Bottom"
+                    Margin="10,0,0,2"
+                    Cursor="Hand" 
+                    Width="36"
+                    Height="36"
+                    ToolTip="Обновить экран" Click="BtnFilter_Click">
+                    <materialDesign:PackIcon
+                        Width="25"
+                        Height="25"
+                        Margin="-12,0"
+                        Kind="Refresh" />
+                </Button>
+            </StackPanel>
+            <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1,0,0,0" Margin="20,0,0,0">
+            <StackPanel Orientation="Horizontal" >
+                    <!--<Button 
+                        x:Name="BtnDashboard" 
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        Foreground="White"
+                        Margin="5,0,0,0"
+                        Cursor="Hand" 
+                        Width="36"
+                        Height="36"
+                        ToolTip="Панель" Click="BtnDashboard_Click">
+                        <materialDesign:PackIcon
+                            Width="25"
+                            Height="25"
+                            Margin="-12,0"
+                            Kind="DesktopMacDashboard" />
+                    </Button>-->
+
+                    <!--<TextBlock 
+                        Text="Обновить" 
+                        Margin="5,0,0,10" 
+                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}" 
+                        Foreground="AntiqueWhite" 
+                        VerticalAlignment="Bottom"/>-->
+                    <!--<Button 
+                        x:Name="BtnExcelImport" 
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        Foreground="White"
+                        Margin="5,0,0,0"
+                        Cursor="Hand" 
+                        Width="36"
+                        Height="36"
+                        ToolTip="Импорт данных за месяц" Click="BtnExcelImport_Click">
+                        <materialDesign:PackIcon
+                            Width="25"
+                            Height="25"
+                            Margin="-12,0"
+                            Kind="DatabaseAdd" />
+                    </Button>
+                    <Button 
+                        x:Name="BtnNormativeImport" 
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        Foreground="White"
+                        Margin="5,0,0,0"
+                        Cursor="Hand" 
+                        Width="36"
+                        Height="36"
+                        ToolTip="Импорт расходных норм" Click="BtnNormativeImport_Click">
+                        <materialDesign:PackIcon
+                            Width="25"
+                            Height="25"
+                            Margin="-12,0"
+                            Kind="DatabaseMarker" />
+                    </Button>
+                    <Button 
+                        x:Name="BtnLastMonthDelete" 
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        Foreground="White"
+                        Margin="5,0,0,0"
+                        Cursor="Hand" 
+                        Width="36"
+                        Height="36"
+                        ToolTip="Удаление данных за последний месяц" Click="BtnLastMonthDelete_Click">
+                        <materialDesign:PackIcon
+                            Width="25"
+                            Height="25"
+                            Margin="-12,0"
+                            Kind="DatabaseMinus" />
+                    </Button>-->
+
+                </StackPanel>
+            </Border>
+        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" Margin="5,10,0,0">
+            <WrapPanel x:Name="Dashboard" ScrollViewer.CanContentScroll="True"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="em.FiltersSections.FilterTreeSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:em.Helpers"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="42"
+    d:DesignWidth="170"
+    mc:Ignorable="d">
+    <StackPanel
+        IsEnabled="{Binding IsFilterSectionEnabled}"
+        Orientation="Horizontal"
+        Visibility="{Binding IsFilterSectionVisible}">
+        <TextBlock
+            Margin="0,0,5,0"
+            VerticalAlignment="Center"
+            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+            Text="{Binding Tittle}" />
+        <TextBox
+            Margin="0,0,-5,0"
+            VerticalAlignment="Center"
+            FontWeight="DemiBold"
+            IsReadOnly="True"
+            Style="{StaticResource MaterialDesignTextBox}"
+            Text="{Binding SelectedText}" />
+        <materialDesign:PopupBox
+            Width="24"
+            IsPopupOpen="{Binding PopupIsOpen, Mode=TwoWay}"
+            PopupHorizontalOffset="{Binding PopupHorisontalOffset}"
+            StaysOpen="True">
+            <Grid
+                MaxHeight="400"
+                Margin="0,-4,0,-8"
+                Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.Row="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="Teal"
+                    BorderThickness="0,0,0,1">
+                    <StackPanel
+                        Margin="15,0"
+                        Orientation="Horizontal"
+                        Visibility="{Binding ToggleButtonCheckedAllIsVisible}">
+                        <TextBlock VerticalAlignment="Center" Text="снять" />
+                        <ToggleButton
+                            x:Name="ToggleButton_AllCheckedUnchecked"
+                            Margin="2,8"
+                            VerticalAlignment="Center"
+                            Command="{Binding ToggleButtonAllCheckedUnchecked_Command}"
+                            CommandParameter="{Binding ElementName=ToggleButton_AllCheckedUnchecked}"
+                            Content=""
+                            IsChecked="True"
+                            IsThreeState="False" />
+                        <TextBlock VerticalAlignment="Center" Text="выбрать" />
+                    </StackPanel>
+                </Border>
+                <TreeView
+                    Grid.Row="1"
+                    Margin="5"
+                    Padding="0,10,20,10"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Families}"
+                    Style="{StaticResource MaterialDesignTreeView}">
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type local:Family}" ItemsSource="{Binding Members}">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding Path=(local:ItemHelper.IsChecked), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type local:Person}">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding Path=(local:ItemHelper.IsChecked), Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="False" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
+
+        </materialDesign:PopupBox>
+    </StackPanel>
+</UserControl>

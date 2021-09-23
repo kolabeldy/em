@@ -1,0 +1,153 @@
+﻿<UserControl
+    x:Class="em.ServicesPages.ColumnChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Name="pieChartPage"
+    d:DesignHeight="600"
+    d:DesignWidth="600"
+    mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Border BorderBrush="LightGray" BorderThickness="1">
+        <Grid Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="0,0,0,1" Margin="0">
+                <TextBlock
+                    x:Name="ChartCaption"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Margin="20,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding ChartCaption}" />
+            </Border>
+            <lvc:CartesianChart
+                x:Name="columnChart"
+                Grid.Row="1"
+                Margin="20,10,0,10"
+                Background="Transparent"
+                DisableAnimations="False"
+                Hoverable="True"
+                LegendLocation="None"
+                Series="{Binding SeriesCollection}"
+                TooltipTimeout="0">
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis
+                        x:Name="axis"
+                        FontSize="11"
+                        FontWeight="Normal"
+                        Labels="{Binding Labels}"
+                        Foreground="Black"
+                        LabelsRotation="-15">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator IsEnabled="True" Step="1">
+                                <lvc:Separator.Stroke>
+                                    <SolidColorBrush Color="LightGray" />
+                                </lvc:Separator.Stroke>
+                            </lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis
+                        FontSize="12"
+                        Foreground="Black"
+                        LabelFormatter="{Binding Formatter}" >
+                        <lvc:Axis.Separator>
+                            <lvc:Separator IsEnabled="True" Step="{Binding Step}">
+                                <lvc:Separator.Stroke>
+                                    <SolidColorBrush Color="LightGray" />
+                                </lvc:Separator.Stroke>
+                            </lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+            
+            <Border Grid.Row="2" BorderBrush="LightGray" BorderThickness="0,1,0,0" Margin="0">
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Slider
+                        x:Name="Slider"
+                        Width="140"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Maximum="10"
+                        Minimum="0"
+                        Style="{StaticResource MaterialDesignDiscreteHorizontalSlider}"
+                        TickFrequency="1"
+                        TickPlacement="BottomRight"
+                        Visibility="{Binding SliderVisible}"
+                        Value="{Binding SliderValue, Mode=TwoWay}" />
+                        <TextBlock
+                        Margin="10,10,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="11"
+                        Text="{Binding SliderValueTxt}"
+                        Visibility="{Binding SliderVisible}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" >
+                        <Button 
+                            x:Name="BtnTable"
+                            Style="{StaticResource MaterialDesignFlatButton}" 
+                            Cursor="Hand" 
+                            ToolTip="Таблица" 
+                            Command="{Binding TableWindowShow_Command}">
+                            <materialDesign:PackIcon
+                                Margin="-8,0"
+                                Width="22"
+                                Height="22"
+                                Kind="TableLarge" />
+                        </Button>
+                        <!--<Button 
+                            x:Name="BtnChart"
+                            Style="{StaticResource MaterialDesignFlatButton}" 
+                            Cursor="Hand" 
+                            ToolTip="Диаграмма" 
+                            Click="BtnChart_Click" >
+                            <materialDesign:PackIcon
+                                Margin="-8,0"
+                                Width="22"
+                                Height="22"
+                                Kind="ChartBar" />
+                        </Button>-->
+                        <Button 
+                            x:Name="BtnPhoto"
+                            Style="{StaticResource MaterialDesignFlatButton}" 
+                            Cursor="Hand" 
+                            Command="{Binding ScreenSave_Command}"
+                            ToolTip="Снимок" >
+                            <materialDesign:PackIcon
+                                Margin="-8,0"
+                                Width="22"
+                                Height="22"
+                                Kind="PhotoCamera" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+        </Grid>
+    </Border>
+</UserControl>
