@@ -16,6 +16,9 @@ namespace em.Models
         public static int LastPeriod { get; set; }
         public static int LastYear { get; set; }
         public static int LastMonth { get; set; }
+        public static int LastPeriodLosses { get; set; }
+        public static string LastPeriodDay { get; set; }
+
 
         public static void InitPeriods()
         {
@@ -39,21 +42,21 @@ namespace em.Models
                     LastPeriod = q.GetInt32(0);
                 }
 
-                //SQLtxt = "SELECT Period FROM FactLosses ORDER BY Period DESC Limit 1";
-                //selectCommand = new SqliteCommand(SQLtxt, db);
-                //q = selectCommand.ExecuteReader();
-                //while (q.Read())
-                //{
-                //    lastPeriodLosses = q.GetInt32(0);
-                //}
+                SQLtxt = "SELECT Period FROM FactLosses ORDER BY Period DESC Limit 1";
+                selectCommand = new SqliteCommand(SQLtxt, db);
+                q = selectCommand.ExecuteReader();
+                while (q.Read())
+                {
+                    LastPeriodLosses = q.GetInt32(0);
+                }
 
-                //SQLtxt = "SELECT Period FROM CurrentERUses ORDER BY Period DESC Limit 1";
-                //selectCommand = new SqliteCommand(SQLtxt, db);
-                //q = selectCommand.ExecuteReader();
-                //while (q.Read())
-                //{
-                //    lastDayPeriod = q.GetString(0);
-                //}
+                SQLtxt = "SELECT Period FROM CurrentERUses ORDER BY Period DESC Limit 1";
+                selectCommand = new SqliteCommand(SQLtxt, db);
+                q = selectCommand.ExecuteReader();
+                while (q.Read())
+                {
+                    LastPeriodDay = q.GetString(0);
+                }
 
             }
             FirstYear = FirstPeriod / 100;

@@ -14,64 +14,64 @@ namespace em.DBAccess
     {
 
         public static string dbpath;
-        public static int firstPeriod;
-        public static int firstYear;
-        public static int firstMonth;
-        public static int lastPeriod;
-        public static int lastYear;
-        public static int lastMonth;
-        public static int lastPeriodLosses;
-        public static string lastDayPeriod;
+        //public static int firstPeriod;
+        //public static int firstYear;
+        //public static int firstMonth;
+        //public static int lastPeriod;
+        //public static int lastYear;
+        //public static int lastMonth;
+        //public static int lastPeriodLosses;
+        //public static string lastDayPeriod;
 
         public static void InitMyPath()
         {
             dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db/emdb.db");
         }
 
-        public static void InitPeriods()
-        {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT Min(Period) as Period FROM ERUses ORDER BY Period";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
+        //public static void InitPeriods()
+        //{
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+        //    {
+        //        db.Open();
+        //        string SQLtxt = "SELECT Min(Period) as Period FROM ERUses ORDER BY Period";
+        //        SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
 
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    firstPeriod = q.GetInt32(0);
-                }
-                SQLtxt = "SELECT Max(Period) as Period FROM ERUses ORDER BY Period";
-                selectCommand = new SqliteCommand(SQLtxt, db);
+        //        SqliteDataReader q = selectCommand.ExecuteReader();
+        //        while (q.Read())
+        //        {
+        //            firstPeriod = q.GetInt32(0);
+        //        }
+        //        SQLtxt = "SELECT Max(Period) as Period FROM ERUses ORDER BY Period";
+        //        selectCommand = new SqliteCommand(SQLtxt, db);
 
-                q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    lastPeriod = q.GetInt32(0);
-                }
+        //        q = selectCommand.ExecuteReader();
+        //        while (q.Read())
+        //        {
+        //            lastPeriod = q.GetInt32(0);
+        //        }
 
-                SQLtxt = "SELECT Period FROM FactLosses ORDER BY Period DESC Limit 1";
-                selectCommand = new SqliteCommand(SQLtxt, db);
-                q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    lastPeriodLosses = q.GetInt32(0);
-                }
+        //        SQLtxt = "SELECT Period FROM FactLosses ORDER BY Period DESC Limit 1";
+        //        selectCommand = new SqliteCommand(SQLtxt, db);
+        //        q = selectCommand.ExecuteReader();
+        //        while (q.Read())
+        //        {
+        //            lastPeriodLosses = q.GetInt32(0);
+        //        }
 
-                SQLtxt = "SELECT Period FROM CurrentERUses ORDER BY Period DESC Limit 1";
-                selectCommand = new SqliteCommand(SQLtxt, db);
-                q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    lastDayPeriod = q.GetString(0);
-                }
+        //        SQLtxt = "SELECT Period FROM CurrentERUses ORDER BY Period DESC Limit 1";
+        //        selectCommand = new SqliteCommand(SQLtxt, db);
+        //        q = selectCommand.ExecuteReader();
+        //        while (q.Read())
+        //        {
+        //            lastDayPeriod = q.GetString(0);
+        //        }
 
-            }
-            firstYear = firstPeriod / 100;
-            firstMonth = firstPeriod - firstYear * 100;
-            lastYear = lastPeriod / 100;
-            lastMonth = lastPeriod - lastYear * 100;
-        }
+        //    }
+        //    firstYear = firstPeriod / 100;
+        //    firstMonth = firstPeriod - firstYear * 100;
+        //    lastYear = lastPeriod / 100;
+        //    lastMonth = lastPeriod - lastYear * 100;
+        //}
         public static List<EResource> RetERListLosses(bool isPrime)
         {
             string idPrime = isPrime ? "1" : "0";
@@ -80,7 +80,7 @@ namespace em.DBAccess
             {
                 db.Open();
                 string SQLtxt = "SELECT e.IdCode, e.Name FROM EResources as e, (Select * FROM FactLosses Group By Id) as l WHERE e.IsActual = 1 AND e.IsPrime = " + idPrime
-                                + " AND e.IdCode = l.IdER AND l.Year >= " + (lastYear - 1).ToString() + " AND e.IdCode <> 16155 AND e.IdCode <> 954 GROUP BY e.IdCode";
+                                + " AND e.IdCode = l.IdER AND l.Year >= " + (Period.LastYear - 1).ToString() + " AND e.IdCode <> 16155 AND e.IdCode <> 954 GROUP BY e.IdCode";
                 SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
 
                 SqliteDataReader q = selectCommand.ExecuteReader();
@@ -134,7 +134,7 @@ namespace em.DBAccess
                     r.NormLossProc = q.GetDouble(11);
                     rez.Add(r);
                 }
-                //DataAccess.lastPeriodLosses = rez[0].Period;
+                //Period.LastPeriodLosses = rez[0].Period;
             }
             return rez;
         }
@@ -146,7 +146,7 @@ namespace em.DBAccess
             using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
             {
                 db.Open();
-                string sqlText = String.Format("DELETE FROM ERUses WHERE Period = " + lastPeriod);
+                string sqlText = String.Format("DELETE FROM ERUses WHERE Period = " + Period.LastPeriod);
 
                 SqliteCommand deleteCommand = new SqliteCommand();
                 deleteCommand.Connection = db;
@@ -154,7 +154,7 @@ namespace em.DBAccess
                 deleteCommand.CommandText = sqlText;
                 deleteCommand.ExecuteReader();
 
-                sqlText = String.Format("DELETE FROM FactLosses WHERE Period = " + lastPeriod);
+                sqlText = String.Format("DELETE FROM FactLosses WHERE Period = " + Period.LastPeriod);
 
                 deleteCommand = new SqliteCommand();
                 deleteCommand.Connection = db;

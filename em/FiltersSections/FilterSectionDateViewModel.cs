@@ -1,5 +1,5 @@
-﻿using em.DBAccess;
-using em.Helpers;
+﻿using em.Helpers;
+using em.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,11 +14,11 @@ namespace em.FiltersSections
         }
         public override ObservableCollection<Family> RetFamilies()
         {
-            int periodFirst = DataAccess.firstPeriod;
-            int startYear = DataAccess.firstYear;
-            int lastPeriod = DataAccess.lastPeriod;
-            int lastYear = DataAccess.lastYear;
-            int lastMonth = DataAccess.lastMonth;
+            int periodFirst = Period.FirstPeriod;
+            int startYear = Period.FirstYear;
+            int lastPeriod = Period.LastPeriod;
+            int lastYear = Period.LastYear;
+            int lastMonth = Period.LastMonth;
             string[] arrMonth = new string[] { "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек" };
             int[] arrYear = new int[lastYear - startYear + 1];
             for (int i = 0; i < (lastYear - startYear + 1); i++)

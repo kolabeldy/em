@@ -30,21 +30,21 @@ namespace em.MenuPages
             return instance;
         }
 
-        public class Period
+        public class PeriodId
         {
             public int Id { get; set; }
             public string Name { get; set; }
         }
-        public List<Period> Months { get; set; }
-        public List<Period> Years { get; set; }
+        public List<PeriodId> Months { get; set; }
+        public List<PeriodId> Years { get; set; }
 
-        private Period monthStartOld;
-        private Period monthEndOld;
-        private Period yearStartOld;
-        private Period yearEndOld;
+        private PeriodId monthStartOld;
+        private PeriodId monthEndOld;
+        private PeriodId yearStartOld;
+        private PeriodId yearEndOld;
 
-        private Period monthStart;
-        public Period MonthStart
+        private PeriodId monthStart;
+        public PeriodId MonthStart
         {
             get => monthStart;
             set
@@ -54,8 +54,8 @@ namespace em.MenuPages
                 OnPropertyChanged("MonthStart");
             }
         }
-        private Period monthEnd;
-        public Period MonthEnd
+        private PeriodId monthEnd;
+        public PeriodId MonthEnd
         {
             get => monthEnd;
             set
@@ -65,8 +65,8 @@ namespace em.MenuPages
                 OnPropertyChanged("MonthEnd");
             }
         }
-        private Period yearStart;
-        public Period YearStart
+        private PeriodId yearStart;
+        public PeriodId YearStart
         {
             get => yearStart;
             set
@@ -76,8 +76,8 @@ namespace em.MenuPages
                 OnPropertyChanged("YearStart");
             }
         }
-        private Period yearEnd;
-        public Period YearEnd
+        private PeriodId yearEnd;
+        public PeriodId YearEnd
         {
             get => yearEnd;
             set
@@ -188,34 +188,34 @@ namespace em.MenuPages
         {
             Months = new()
             {
-                new Period() { Id = 1, Name = "янв" },
-                new Period() { Id = 2, Name = "фев" },
-                new Period() { Id = 3, Name = "мар" },
-                new Period() { Id = 4, Name = "апр" },
-                new Period() { Id = 5, Name = "май" },
-                new Period() { Id = 6, Name = "июн" },
-                new Period() { Id = 7, Name = "июл" },
-                new Period() { Id = 8, Name = "авг" },
-                new Period() { Id = 9, Name = "сен" },
-                new Period() { Id = 10, Name = "окт" },
-                new Period() { Id = 11, Name = "ноя" },
-                new Period() { Id = 12, Name = "дек" },
+                new PeriodId() { Id = 1, Name = "янв" },
+                new PeriodId() { Id = 2, Name = "фев" },
+                new PeriodId() { Id = 3, Name = "мар" },
+                new PeriodId() { Id = 4, Name = "апр" },
+                new PeriodId() { Id = 5, Name = "май" },
+                new PeriodId() { Id = 6, Name = "июн" },
+                new PeriodId() { Id = 7, Name = "июл" },
+                new PeriodId() { Id = 8, Name = "авг" },
+                new PeriodId() { Id = 9, Name = "сен" },
+                new PeriodId() { Id = 10, Name = "окт" },
+                new PeriodId() { Id = 11, Name = "ноя" },
+                new PeriodId() { Id = 12, Name = "дек" },
 
             };
             Years = new();
-            for (int y = 0; y <= DataAccess.lastYear - DataAccess.firstYear; y++)
+            for (int y = 0; y <= Period.LastYear - Period.FirstYear; y++)
             {
-                Period yy = new();
+                PeriodId yy = new();
                 yy.Id = y + 1;
-                yy.Name = (DataAccess.firstYear + y).ToString();
+                yy.Name = (Period.FirstYear + y).ToString();
                 Years.Add(yy);
             }
 
-            beginPeriod = DataAccess.lastPeriod;
-            endPeriod = DataAccess.lastPeriod;
+            beginPeriod = Period.LastPeriod;
+            endPeriod = Period.LastPeriod;
 
-            MonthStart = Months[DataAccess.lastMonth - 1];
-            MonthEnd = Months[DataAccess.lastMonth - 1];
+            MonthStart = Months[Period.LastMonth - 1];
+            MonthEnd = Months[Period.LastMonth - 1];
             YearStart = Years[Years.Count - 1];
             YearEnd = Years[Years.Count - 1];
 

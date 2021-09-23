@@ -81,7 +81,7 @@ namespace em.MenuPages
             modelER.Init();
             FilterERPanel.Content = FilterER;
             //modelER.PopupHorisontalOffset = 65;
-            FilterDatePanel.Text = DataAccess.lastDayPeriod;
+            FilterDatePanel.Text = Period.LastPeriodDay;
             //PRSectionFilterActivate(isMonth);
         }
         protected void FilterEROnChangeHandler()

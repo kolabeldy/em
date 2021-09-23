@@ -38,58 +38,58 @@ namespace em.Models
         public static bool ReportMonthShow()
         {
             bool rez = true;
-            string inputpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "template/emReportMonth.xltx");
-            string outputpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "report/ОтчетМес.xlsx");
+            //string inputpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "template/emReportMonth.xltx");
+            //string outputpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "report/ОтчетМес.xlsx");
 
-            Excel.Application application = null;
-            Excel.Workbooks workbooks = null;
-            Excel.Workbook workbook = null;
-            Excel.Sheets worksheets = null;
-            Excel.Worksheet worksheet = null;
-            Excel.Range c1 = null;
-            Excel.Range c2 = null;
-            try
-            {
-                application = new Excel.Application
-                {
-                    Visible = true
-                };
+            //Excel.Application application = null;
+            //Excel.Workbooks workbooks = null;
+            //Excel.Workbook workbook = null;
+            //Excel.Sheets worksheets = null;
+            //Excel.Worksheet worksheet = null;
+            //Excel.Range c1 = null;
+            //Excel.Range c2 = null;
+            //try
+            //{
+            //    application = new Excel.Application
+            //    {
+            //        Visible = true
+            //    };
 
-                application.ScreenUpdating = true;
+            //    application.ScreenUpdating = true;
 
-                workbooks = application.Workbooks;
-                workbook = application.Workbooks.Open(inputpath,
-                  Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                  Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                  Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                  Type.Missing, Type.Missing);
+            //    workbooks = application.Workbooks;
+            //    workbook = application.Workbooks.Open(inputpath,
+            //      Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //      Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //      Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+            //      Type.Missing, Type.Missing);
 
-                worksheets = workbook.Worksheets; //получаем доступ к коллекции рабочих листов
-                worksheet = worksheets.Item[1];//получаем доступ к первому листу
+            //    worksheets = workbook.Worksheets; //получаем доступ к коллекции рабочих листов
+            //    worksheet = worksheets.Item[1];//получаем доступ к первому листу
 
-                object[,] arrRes = GetArrReports();
+            //    object[,] arrRes = GetArrReports();
 
-                c1 = (Excel.Range)worksheet.Cells[2, 1];
-                c2 = (Excel.Range)worksheet.Cells[arrRes.GetLength(0) + 1, arrRes.GetLength(1)];
-                Excel.Range rangeCaption = worksheet.get_Range(c1, c2);
-                rangeCaption.Value = arrRes;
+            //    c1 = (Excel.Range)worksheet.Cells[2, 1];
+            //    c2 = (Excel.Range)worksheet.Cells[arrRes.GetLength(0) + 1, arrRes.GetLength(1)];
+            //    Excel.Range rangeCaption = worksheet.get_Range(c1, c2);
+            //    rangeCaption.Value = arrRes;
 
-                //application.Run((object)"RefreshAll");
-                //worksheet = worksheets.Item[2];
-                //worksheet = workbook.ActiveSheet();
-                //application.ScreenUpdating = true;
-                application.Visible = true;
-            }
-            finally
-            {
-                //освобождаем память, занятую объектами
-                //Marshal.ReleaseComObject(cell);
-                //Marshal.ReleaseComObject(worksheet);
-                //Marshal.ReleaseComObject(worksheets);
-                //Marshal.ReleaseComObject(workbook);
-                //Marshal.ReleaseComObject(workbooks);
-                //Marshal.ReleaseComObject(application);
-            }
+            //    //application.Run((object)"RefreshAll");
+            //    //worksheet = worksheets.Item[2];
+            //    //worksheet = workbook.ActiveSheet();
+            //    //application.ScreenUpdating = true;
+            //    application.Visible = true;
+            //}
+            //finally
+            //{
+            //    //освобождаем память, занятую объектами
+            //    //Marshal.ReleaseComObject(cell);
+            //    //Marshal.ReleaseComObject(worksheet);
+            //    //Marshal.ReleaseComObject(worksheets);
+            //    //Marshal.ReleaseComObject(workbook);
+            //    //Marshal.ReleaseComObject(workbooks);
+            //    //Marshal.ReleaseComObject(application);
+            //}
             return rez;
 
         }

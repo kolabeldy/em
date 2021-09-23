@@ -43,10 +43,10 @@ namespace em.DBAccess
             int exportYear = Convert.ToInt32(worksheet.Range[4, 1].Text.Substring(3));
             int exportMonth = Convert.ToInt32(worksheet.Range[4, 1].Text.Substring(0, 2));
             int prevPeriod = exportMonth > 1 ? exportYear * 100 + exportMonth - 1 : (exportYear - 1) * 100 + 12;
-            if (prevPeriod != DataAccess.lastPeriod)
+            if (prevPeriod != Period.LastPeriod)
             {
-                int lastYear = DataAccess.lastPeriod / 100;
-                int lastMonth = DataAccess.lastPeriod - lastYear * 100;
+                int lastYear = Period.LastPeriod / 100;
+                int lastMonth = Period.LastPeriod - lastYear * 100;
                 int nextYear = lastMonth < 12 ? lastYear : lastYear + 1;
                 int nextMonth = lastMonth < 12 ? lastMonth + 1 : 1;
                 MessageBox.Show(String.Format("Не найдены записи за требуемый период: {0}", nextYear.ToString() + "_" + nextMonth.ToString("00")));
@@ -292,7 +292,7 @@ namespace em.DBAccess
         }
         public static bool ImportLossesDataFromExcel()
         {
-            int lastLossPeriod = DataAccess.lastPeriodLosses;
+            int lastLossPeriod = Period.LastPeriodLosses;
             List<FactLosse> factLosses = new List<FactLosse>();
 
             //Create an instance of ExcelEngine

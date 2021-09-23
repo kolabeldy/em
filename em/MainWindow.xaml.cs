@@ -28,7 +28,7 @@ namespace em
         public MainWindow()
         {
             DataAccess.InitMyPath();
-            DataAccess.InitPeriods();
+            Period.InitPeriods();
 
             InitializeComponent();
 
@@ -116,7 +116,7 @@ namespace em
                         rez = ExcelImport.ImportMothDataFromExcel();
                         if (rez == true)
                         {
-                            DataAccess.InitPeriods();
+                            Period.InitPeriods();
                             MonthMonitor.isChange = true;
                             MonthMonitor.GetInstance().FilterInit(isDateOnly: true);
                             MonthMonitor.GetInstance().FormRefresh();
@@ -126,7 +126,7 @@ namespace em
                         rez = ExcelImport.ImportDayDataFromExcel();
                         if (rez == true)
                         {
-                            DataAccess.InitPeriods();
+                            Period.InitPeriods();
                             DayMonitor.isChange = true;
                             DayMonitor.GetInstance().FilterInit(isDateOnly: false);
                             DayMonitor.GetInstance().FormRefresh();
@@ -153,7 +153,7 @@ namespace em
                         rez = ExcelImport.ImportLossesDataFromExcel();
                         if (rez == true)
                         {
-                            DataAccess.InitPeriods();
+                            Period.InitPeriods();
                             LossesMonitor.GetInstance().FilterInit(isDateOnly: true);
                             LossesMonitor.GetInstance().FormRefresh();
                         }
@@ -162,7 +162,7 @@ namespace em
                         rez = DataAccess.DeleteLastMonthUseAndLosses();
                         if (rez == true)
                         {
-                            DataAccess.InitPeriods();
+                            Period.InitPeriods();
                             MonthMonitor.isChange = true;
                             MonthMonitor.GetInstance().FilterInit(isDateOnly: true);
                             MonthMonitor.GetInstance().FormRefresh();

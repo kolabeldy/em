@@ -708,7 +708,7 @@ namespace em.Models
             foreach (Person r in dateSel)
             {
                 int curPeriod = r.Id;
-                if (curPeriod <= DataAccess.firstPeriod) return null;
+                if (curPeriod <= Models.Period.FirstPeriod) return null;
                 int curYear = curPeriod / 100;
                 int prevYear = curYear - 1;
                 int curMonth = curPeriod - curYear * 100;
