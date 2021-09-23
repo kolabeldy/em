@@ -28,7 +28,7 @@
             Grid.Column="1">
             <TextBlock FontSize="20" FontWeight="Black" Foreground="#FF013A3A" Text="em - Energy Monitor" />
             <TextBlock Margin="0,0,0,0" FontWeight="Bold" Text="версия - 3.0" />
-            <TextBlock Margin="0,10,0,0" FontWeight="Normal" Text="Copyright 2019 - 2021 from Andrey Vlasov" />
+            <TextBlock Margin="0,10,0,0" FontWeight="Normal" Text="Copyright 2019 - 2021 Andrey Vlasov" />
             <TextBlock Margin="0,20,0,0" FontWeight="Black" Text="Пользователь - ПАО Химпром" />
 
         </StackPanel>

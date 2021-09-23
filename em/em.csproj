@@ -97,7 +97,7 @@
     <None Update="db\emdb.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="template\emReportMonth.xltx">
+    <None Update="template\emReportMonth.xltm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
