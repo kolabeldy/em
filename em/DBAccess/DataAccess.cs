@@ -14,64 +14,12 @@ namespace em.DBAccess
     {
 
         public static string dbpath;
-        //public static int firstPeriod;
-        //public static int firstYear;
-        //public static int firstMonth;
-        //public static int lastPeriod;
-        //public static int lastYear;
-        //public static int lastMonth;
-        //public static int lastPeriodLosses;
-        //public static string lastDayPeriod;
 
         public static void InitMyPath()
         {
             dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db/emdb.db");
         }
 
-        //public static void InitPeriods()
-        //{
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-        //    {
-        //        db.Open();
-        //        string SQLtxt = "SELECT Min(Period) as Period FROM ERUses ORDER BY Period";
-        //        SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-        //        SqliteDataReader q = selectCommand.ExecuteReader();
-        //        while (q.Read())
-        //        {
-        //            firstPeriod = q.GetInt32(0);
-        //        }
-        //        SQLtxt = "SELECT Max(Period) as Period FROM ERUses ORDER BY Period";
-        //        selectCommand = new SqliteCommand(SQLtxt, db);
-
-        //        q = selectCommand.ExecuteReader();
-        //        while (q.Read())
-        //        {
-        //            lastPeriod = q.GetInt32(0);
-        //        }
-
-        //        SQLtxt = "SELECT Period FROM FactLosses ORDER BY Period DESC Limit 1";
-        //        selectCommand = new SqliteCommand(SQLtxt, db);
-        //        q = selectCommand.ExecuteReader();
-        //        while (q.Read())
-        //        {
-        //            lastPeriodLosses = q.GetInt32(0);
-        //        }
-
-        //        SQLtxt = "SELECT Period FROM CurrentERUses ORDER BY Period DESC Limit 1";
-        //        selectCommand = new SqliteCommand(SQLtxt, db);
-        //        q = selectCommand.ExecuteReader();
-        //        while (q.Read())
-        //        {
-        //            lastDayPeriod = q.GetString(0);
-        //        }
-
-        //    }
-        //    firstYear = firstPeriod / 100;
-        //    firstMonth = firstPeriod - firstYear * 100;
-        //    lastYear = lastPeriod / 100;
-        //    lastMonth = lastPeriod - lastYear * 100;
-        //}
         public static List<EResource> RetERListLosses(bool isPrime)
         {
             string idPrime = isPrime ? "1" : "0";
