@@ -133,19 +133,19 @@ namespace em.MenuPages
         {
             List<NormLosse> NLossList = NormLosse.ToList();
             NormLossList.Clear();
-            var qrySource = from e in EResource.ToList()
-                            join o1 in NLossList on e.IdCode equals o1.IdER
+            var qrySource = from e in EResource.ActualToList()
+                            join o1 in NLossList on e.Id equals o1.IdER
                             where o1.Kvart == 1
-                            join o2 in NLossList on e.IdCode equals o2.IdER
+                            join o2 in NLossList on e.Id equals o2.IdER
                             where o2.Kvart == 2
-                            join o3 in NLossList on e.IdCode equals o3.IdER
+                            join o3 in NLossList on e.Id equals o3.IdER
                             where o3.Kvart == 3
-                            join o4 in NLossList on e.IdCode equals o4.IdER
+                            join o4 in NLossList on e.Id equals o4.IdER
                             where o4.Kvart == 4
-                            orderby e.IdCode
+                            orderby e.Id
                             select new
                             {
-                                IdER = e.IdCode,
+                                IdER = e.Id,
                                 ERName = e.Name,
                                 LossKv1 = o1.LossesNorm,
                                 LossKv2 = o2.LossesNorm,

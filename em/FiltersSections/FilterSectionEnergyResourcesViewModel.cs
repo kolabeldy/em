@@ -21,12 +21,12 @@ namespace em.FiltersSections
                 rez.Add(new Family()
                 {
                     Name = "Покупные",
-                    Members = PList(EResource.ToList(isPrime: true))
+                    Members = PList(EResource.ToList(isActual: SelectChoise.All, isMain: SelectChoise.All, isPrime: SelectChoise.True))
                 });
                 rez.Add(new Family()
                 {
                     Name = "Вторичные",
-                    Members = PList(EResource.ToList(isPrime: false))
+                    Members = PList(EResource.ToList(isActual: SelectChoise.All, isMain: SelectChoise.All, isPrime: SelectChoise.False))
                 });
                 return rez;
             }
