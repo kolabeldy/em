@@ -67,236 +67,100 @@ namespace em.Models
         #endregion
         public static List<Person> SelectPeriodList(int begin, int end)
         {
-            List<Person> rez = new List<Person>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            List<Person> rez = new();
+            string sql = "SELECT Period FROM ERUses WHERE Period >= " + begin.ToString()
+                + " AND Period <= " + end.ToString()
+                + " GROUP BY Period ORDER BY Period";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
-
-                string SQLtxt = "SELECT Period FROM ERUses WHERE Period >= " + begin.ToString()
-                    + " AND Period <= " + end.ToString()
-                    + " GROUP BY Period ORDER BY Period";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
+                SqliteCommand selectCommand = new(sql, db);
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    Person r = new Person();
-                    r.Id = q.GetInt32(0);
-                    r.Name = "";
-                    rez.Add(r);
+                    rez.Add(new()
+                    {
+                        Id = q.GetInt32(0),
+                        Name = ""
+                    });
                 }
             }
             return rez;
         }
 
         #region Total
-        public static List<FullFields> RetTotalUseFactFromERType(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT IsPrime, SUM(FactCost) as FactCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsPrime "
-                                + "ORDER BY IsPrime DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "первичные" : "вторичные";
-                    r.FactCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-            }
-            return rez;
-        }
         public static List<FullFields> RetTotalUseDiffFromERType(List<Person> dateSel)
         {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            List<FullFields> rez = new();
+            string sql = "SELECT IsERPrime, SUM(DiffCost) as DiffCost "
+                            + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
+                            + "AND Period IN " + Global.ListToSting(dateSel) + " "
+                            + "GROUP BY IsERPrime "
+                            + "ORDER BY IsERPrime DESC";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
-                string SQLtxt = "SELECT IsERPrime, SUM(DiffCost) as DiffCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsERPrime "
-                                + "ORDER BY IsERPrime DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
+                SqliteCommand selectCommand = new(sql, db);
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "первичные" : "вторичные";
-                    r.DiffCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-            }
-            return rez;
-        }
-        public static List<FullFields> RetTotalUseFactFromCCType(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT IsCCTechnology, SUM(FactCost) as FactCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsCCTechnology "
-                                + "ORDER BY IsCCTechnology DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "технологические" : "вспомогательные";
-                    r.FactCost = q.GetDouble(1);
-                    rez.Add(r);
+                    rez.Add(new()
+                    {
+                        TotalParamX = q.GetDouble(0) > 0 ? "первичные" : "вторичные",
+                        DiffCost = q.GetDouble(1)
+                    });
                 }
             }
             return rez;
         }
         public static List<FullFields> RetTotalUseDiffFromCCType(List<Person> dateSel)
         {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            List<FullFields> rez = new();
+            string sql = "SELECT IsCCTechnology, SUM(DiffCost) as DiffCost "
+                            + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
+                            + "AND Period IN " + Global.ListToSting(dateSel) + " "
+                            + "GROUP BY IsCCTechnology "
+                            + "ORDER BY IsCCTechnology DESC";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
-                string SQLtxt = "SELECT IsCCTechnology, SUM(DiffCost) as DiffCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsCCTechnology "
-                                + "ORDER BY IsCCTechnology DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
+                SqliteCommand selectCommand = new(sql, db);
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "технологические" : "вспомогательные";
-                    r.DiffCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-            }
-            return rez;
-        }
-        public static List<FullFields> RetTotalUseFactFromNormType(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT IsNorm, SUM(FactCost) as FactCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsNorm "
-                                + "ORDER BY IsNorm DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "нормируемые" : "лимитируемые";
-                    r.FactCost = q.GetDouble(1);
-                    rez.Add(r);
+                    rez.Add(new()
+                    {
+                        TotalParamX = q.GetDouble(0) > 0 ? "технологические" : "вспомогательные",
+                        DiffCost = q.GetDouble(1)
+                    });
                 }
             }
             return rez;
         }
         public static List<FullFields> RetTotalUseDiffFromNormType(List<Person> dateSel)
         {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            List<FullFields> rez = new();
+            string sql = "SELECT IsNorm, SUM(DiffCost) as DiffCost "
+                            + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
+                            + "AND Period IN " + Global.ListToSting(dateSel) + " "
+                            + "GROUP BY IsNorm "
+                            + "ORDER BY IsNorm DESC";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
-                string SQLtxt = "SELECT IsNorm, SUM(DiffCost) as DiffCost "
-                                + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
-                                + "AND Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsNorm "
-                                + "ORDER BY IsNorm DESC";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
+                SqliteCommand selectCommand = new(sql, db);
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "нормируемые" : "лимитируемые";
-                    r.DiffCost = q.GetDouble(1);
-                    rez.Add(r);
+                    rez.Add(new()
+                    {
+                        TotalParamX = q.GetDouble(0) > 0 ? "нормируемые" : "лимитируемые",
+                        DiffCost = q.GetDouble(1)
+                    });
                 }
             }
             return rez;
         }
-
-        public static List<FullFields> RetTotalLossDiffFromERType(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT IsERPrime, SUM(DiffCost) as DiffCost  "
-                                + "FROM LosseFullCosts "
-                                + "WHERE Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsERPrime";
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = q.GetDouble(0) > 0 ? "нормируемые" : "лимитируемые";
-                    r.DiffCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-            }
-            return rez;
-        }
-
-        public static List<FullFields> RetTotalLossFromFactNorm(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
-            {
-                db.Open();
-                string SQLtxt = "SELECT IsERPrime, SUM(FactCost) as FactCost  "
-                                + "FROM LosseFullCosts "
-                                + "WHERE Period IN " + Global.ListToSting(dateSel);
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
-                SqliteDataReader q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = "фактические";
-                    r.FactCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-                SQLtxt = "SELECT IsERPrime, SUM(NormCost) as NormCost  "
-                                + "FROM LosseFullCosts "
-                                + "WHERE Period IN " + Global.ListToSting(dateSel);
-                selectCommand = new SqliteCommand(SQLtxt, db);
-
-                q = selectCommand.ExecuteReader();
-                while (q.Read())
-                {
-                    FullFields r = new FullFields();
-                    r.TotalParamX = "нормативные";
-                    r.FactCost = q.GetDouble(1);
-                    rez.Add(r);
-                }
-            }
-            return rez;
-        }
-
 
         #endregion
 

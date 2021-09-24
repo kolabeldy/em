@@ -19,26 +19,25 @@ namespace em.Models
 
         public static List<FullFields> ToList(List<Person> dateSel)
         {
-            List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            List<FullFields> rez = new();
+            string sql = "SELECT Period, IdER, ERName, UnitName, IsERPrime, "
+                            + "SUM(FactCost) as FactCost "
+                            + "FROM LosseFullCosts "
+                            + "WHERE Period IN " + Global.ListToSting(dateSel) + " "
+                            + "GROUP BY IsERPrime, IdER";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
-                string SQLtxt = "SELECT Period, IdER, ERName, UnitName, IsERPrime, "
-                                + "SUM(FactCost) as FactCost "
-                                + "FROM LosseFullCosts "
-                                + "WHERE Period IN " + Global.ListToSting(dateSel) + " "
-                                + "GROUP BY IsERPrime, IdER";
-
-                SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
+                SqliteCommand selectCommand = new(sql, db);
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    FullFields r = new FullFields();
-                    r.Period = q.GetInt32(0);
-                    r.IsERPrime = q.GetBoolean(4);
-                    r.FactCost = q.GetDouble(5);
-                    rez.Add(r);
+                    rez.Add(new FullFields
+                    {
+                        Period = q.GetInt32(0),
+                        IsERPrime = q.GetBoolean(4),
+                        FactCost = q.GetDouble(5)
+                    });
                 }
             }
             return rez;

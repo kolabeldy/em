@@ -138,7 +138,7 @@ namespace em
                         if (exportList != null)
                         {
                             Norm.DeleteAll();
-                            ERNorm.DeleteAll();
+                            ERNorm.Clear();
                             Norm.InsertRec(exportList);
                             ERNorm.InsertRec();
 
