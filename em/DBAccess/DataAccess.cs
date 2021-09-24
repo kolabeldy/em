@@ -12,19 +12,11 @@ namespace em.DBAccess
 {
     public class DataAccess
     {
-
-        public static string dbpath;
-
-        public static void InitMyPath()
-        {
-            dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db/emdb.db");
-        }
-
         public static List<EResource> RetERListLosses(bool isPrime)
         {
             string idPrime = isPrime ? "1" : "0";
             List<EResource> rez = new List<EResource>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT e.IdCode, e.Name FROM EResources as e, (Select * FROM FactLosses Group By Id) as l WHERE e.IsActual = 1 AND e.IsPrime = " + idPrime
@@ -48,7 +40,7 @@ namespace em.DBAccess
             if (argType == ChartDataType.FactLoss) cType = "IdER";
             else if (argType == ChartDataType.Period) cType = "Period";
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, "
@@ -91,7 +83,7 @@ namespace em.DBAccess
         {
             MessageBoxResult result = MessageBox.Show("Данные по использованию энергоресурсов и по фактическим потерям за последний введённый месяц будут удалены", "Обновление БД", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             if (result != MessageBoxResult.OK) return false;
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string sqlText = String.Format("DELETE FROM ERUses WHERE Period = " + Period.LastPeriod);

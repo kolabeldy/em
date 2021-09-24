@@ -27,7 +27,7 @@ namespace em
     {
         public MainWindow()
         {
-            DataAccess.InitMyPath();
+            Global.InitMyPath();
             Period.InitPeriods();
 
             InitializeComponent();

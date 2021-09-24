@@ -98,7 +98,7 @@ namespace em.Models
         {
             List<Report> reports = new List<Report>();
 
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "

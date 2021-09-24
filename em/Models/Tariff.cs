@@ -18,7 +18,7 @@ namespace em.Models
         public static List<Tariff> ToList()
         {
             List<Tariff> rez = new();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Id, Tarif, Name, Unit FROM Tariffs "
@@ -42,7 +42,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand updateCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())

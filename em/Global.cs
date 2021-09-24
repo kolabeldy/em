@@ -1,6 +1,7 @@
 ﻿using em.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,17 @@ namespace em
 {
     public enum ChartType { UseER, UseCC, UsePR, LossesER, CompareER, CompareCC }
     public enum ChartDataType { ER, CC, FactLoss, Period }
-
     public enum ChartWidthType { Slim, Wide }
     public enum SelectChoise { All, True, False}
 
     public static class Global
     {
+        public static string dbpath;
+
+        public static void InitMyPath()
+        {
+            dbpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "db/emdb.db");
+        }
         public static List<Person> RetDynamicTruePeriod(int periodFirst, int periodLast)
         {
             int lastYear = periodFirst == periodLast ? periodLast / 100 + 1 : periodLast / 100;

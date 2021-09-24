@@ -23,7 +23,7 @@ namespace em.Models
 
         public static void DeleteAll()
         {
-            using (SqliteConnection db = new($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 SqliteCommand deleteCommand = new();
@@ -35,7 +35,7 @@ namespace em.Models
         }
         public static void InsertRec(List<TempUseERTable> exportList)
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string sqlText = default;

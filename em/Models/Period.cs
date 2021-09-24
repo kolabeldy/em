@@ -22,7 +22,7 @@ namespace em.Models
 
         public static void InitPeriods()
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Min(Period) as Period FROM ERUses ORDER BY Period";

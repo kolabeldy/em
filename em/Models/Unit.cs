@@ -17,7 +17,7 @@ namespace em.Models
         public static List<Unit> RetUnitList()
         {
             List<Unit> rez = new List<Unit>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Id, Name, K FROM Units ORDER BY Id";

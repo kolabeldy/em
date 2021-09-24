@@ -21,7 +21,7 @@ namespace em.Models
         public static List<Person> AllToList()
         {
             List<Person> rez = new List<Person>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IdCode, Name FROM EResources WHERE IsActual ORDER BY IdCode";
@@ -42,7 +42,7 @@ namespace em.Models
         public static List<EResource> ToListAll()
         {
             List<EResource> rez = new List<EResource>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IdCode, Name, Unit, IsMain, IsPrime, IsActual FROM EResources "
@@ -67,7 +67,7 @@ namespace em.Models
         public static List<EResource> ToList()
         {
             List<EResource> rez = new List<EResource>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IdCode, Name FROM EResources WHERE IsActual = 1 "
@@ -89,7 +89,7 @@ namespace em.Models
         {
             string idPrime = isPrime ? "1" : "0";
             List<EResource> rez = new List<EResource>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IdCode, Name FROM EResources WHERE IsActual = 1 AND IsPrime = " + idPrime
@@ -112,7 +112,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand insertCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())
@@ -132,7 +132,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand insertCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())
@@ -151,7 +151,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand insertCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())

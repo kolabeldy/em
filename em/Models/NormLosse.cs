@@ -19,7 +19,7 @@ namespace em.Models
         public static List<NormLosse> ToList()
         {
             List<NormLosse> rez = new List<NormLosse>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Id, IdER, Kvart, LossesNorm FROM NormLosses ORDER BY Id";
@@ -42,7 +42,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand updateCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())
@@ -64,7 +64,7 @@ namespace em.Models
         {
             string SQLtxt = default;
             SqliteCommand insertCommand;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())

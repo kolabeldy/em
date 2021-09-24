@@ -20,7 +20,7 @@ namespace em.Models
         public static List<FullFields> ToList(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, IdER, ERName, UnitName, IsERPrime, "

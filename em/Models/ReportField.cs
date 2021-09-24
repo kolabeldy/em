@@ -85,7 +85,7 @@ namespace em.Models
         //{
         //    List<FullFields> rez = new List<FullFields>();
         //    string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        db.Open();
         //        string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -142,7 +142,7 @@ namespace em.Models
         //{
         //    List<FullFields> rez = new List<FullFields>();
         //    string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        //string aaa = Global.ListToSting(ccSel);
         //        db.Open();
@@ -200,7 +200,7 @@ namespace em.Models
         //{
         //    List<FullFields> rez = new List<FullFields>();
         //    string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        db.Open();
         //        string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -257,7 +257,7 @@ namespace em.Models
         //{
         //    List<FullFields> rez = new List<FullFields>();
         //    string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        db.Open();
         //        string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -314,7 +314,7 @@ namespace em.Models
         //public static List<FullFields> RetUseDayFromER(List<Person> ccSel, List<Person> erSel)
         //{
         //    List<FullFields> rez = new List<FullFields>();
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        db.Open();
         //        string SQLtxt = "SELECT Period, IdCC, CCName, IsCCMain, IsTechnology, "
@@ -351,7 +351,7 @@ namespace em.Models
         //public static List<FullFields> RetUseDayFromCC(List<Person> ccSel, List<Person> erSel)
         //{
         //    List<FullFields> rez = new List<FullFields>();
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        //string aaa = Global.ListToSting(ccSel);
         //        db.Open();
@@ -413,7 +413,7 @@ namespace em.Models
         //        datePrev.Add(n);
         //    }
         //    List<FullFields> rez = new List<FullFields>();
-        //    using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
         //    {
         //        db.Open();
         //        string SQLtxt =

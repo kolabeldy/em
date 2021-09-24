@@ -18,17 +18,17 @@ namespace em.FiltersSections
             rez.Add(new Family()
             {
                 Name = "Основные",
-                Members = PList(CostCenter.ToList(isMain: true, isTechnology: true))
+                Members = PList(CostCenter.ToList(isActual: SelectChoise.All, isMain: SelectChoise.True, isTechnology: SelectChoise.True))
             });
             rez.Add(new Family()
             {
                 Name = "Прочие технологические",
-                Members = PList(CostCenter.ToList(isMain: false, isTechnology: true))
+                Members = PList(CostCenter.ToList(isActual: SelectChoise.All, isMain: SelectChoise.False, isTechnology: SelectChoise.True))
             });
             rez.Add(new Family()
             {
                 Name = "Вспомогательные",
-                Members = PList(CostCenter.ToList(isMain: false, isTechnology: false))
+                Members = PList(CostCenter.ToList(isActual: SelectChoise.All, isMain: SelectChoise.False, isTechnology: SelectChoise.False))
             });
             return rez;
         }

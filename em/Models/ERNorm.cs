@@ -27,7 +27,7 @@ namespace em.Models
 
         public static void DeleteAll()
         {
-            using (SqliteConnection db = new($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 SqliteCommand deleteCommand = new();
@@ -41,7 +41,7 @@ namespace em.Models
         {
             List<TempNormTable> normList = new List<TempNormTable>();
             int[] arrIdER = new int[] { 950, 951, 954, 955, 966, 990, 991 };
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IdCostCenter, IdProduct, IdER, K, NormWinter, NormSummer FROM Norms";

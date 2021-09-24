@@ -68,7 +68,7 @@ namespace em.Models
         public static List<Person> SelectPeriodList(int begin, int end)
         {
             List<Person> rez = new List<Person>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
 
@@ -93,7 +93,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseFactFromERType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsPrime, SUM(FactCost) as FactCost "
@@ -117,7 +117,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseDiffFromERType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsERPrime, SUM(DiffCost) as DiffCost "
@@ -141,7 +141,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseFactFromCCType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsCCTechnology, SUM(FactCost) as FactCost "
@@ -165,7 +165,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseDiffFromCCType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsCCTechnology, SUM(DiffCost) as DiffCost "
@@ -189,7 +189,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseFactFromNormType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsNorm, SUM(FactCost) as FactCost "
@@ -213,7 +213,7 @@ namespace em.Models
         public static List<FullFields> RetTotalUseDiffFromNormType(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsNorm, SUM(DiffCost) as DiffCost "
@@ -239,7 +239,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
 
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsERPrime, SUM(DiffCost) as DiffCost  "
@@ -264,7 +264,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
 
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT IsERPrime, SUM(FactCost) as FactCost  "
@@ -303,7 +303,7 @@ namespace em.Models
         public static List<FullFields> UsePrime(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 // Распределение первичных без учёта потерь
@@ -342,7 +342,7 @@ namespace em.Models
         public static List<FullFields> UseSecondary(List<Person> dateSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 // Распределение вторичных без учёта потерь
@@ -386,7 +386,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
             string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -443,7 +443,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
             string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 //string aaa = Global.ListToSting(ccSel);
                 db.Open();
@@ -501,7 +501,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
             string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -558,7 +558,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
             string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
@@ -618,7 +618,7 @@ namespace em.Models
         public static List<FullFields> RetUseDayFromER(List<Person> ccSel, List<Person> erSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, IdCC, CCName, IsCCMain, IsTechnology, "
@@ -655,7 +655,7 @@ namespace em.Models
         public static List<FullFields> RetUseDayFromCC(List<Person> ccSel, List<Person> erSel)
         {
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 //string aaa = Global.ListToSting(ccSel);
                 db.Open();
@@ -718,7 +718,7 @@ namespace em.Models
                 datePrev.Add(n);
             }
             List<FullFields> rez = new List<FullFields>();
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt =

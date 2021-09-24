@@ -265,12 +265,12 @@ namespace em.MenuPages
         }
         private void Refresh()
         {
-            erUseList = FullFields.RetUseFromER(FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.AllToList(), EResource.AllToList(), "все");
-            ccUseList = FullFields.RetUseFromCC(FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.AllToList(), EResource.AllToList(), "все");
-            erCompareList = FullFields.RetUseCompare(ChartDataType.ER, FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.AllToList(), EResource.AllToList(), "все");
-            ccCompareList = FullFields.RetUseCompare(ChartDataType.CC, FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.AllToList(), EResource.AllToList(), "все");
+            erUseList = FullFields.RetUseFromER(FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.ActualToList(), EResource.AllToList(), "все");
+            ccUseList = FullFields.RetUseFromCC(FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.ActualToList(), EResource.AllToList(), "все");
+            erCompareList = FullFields.RetUseCompare(ChartDataType.ER, FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.ActualToList(), EResource.AllToList(), "все");
+            ccCompareList = FullFields.RetUseCompare(ChartDataType.CC, FullFields.SelectPeriodList(beginPeriod, endPeriod), CostCenter.ActualToList(), EResource.AllToList(), "все");
             lossFactList = FactLosse.ToList(FullFields.SelectPeriodList(beginPeriod, endPeriod));
-            diffPeriodList = FullFields.RetUsePeriodFromER(FullFields.SelectPeriodList(RetBeginDynamic(beginPeriod, endPeriod), endPeriod), CostCenter.AllToList(), EResource.AllToList(), "все");
+            diffPeriodList = FullFields.RetUsePeriodFromER(FullFields.SelectPeriodList(RetBeginDynamic(beginPeriod, endPeriod), endPeriod), CostCenter.ActualToList(), EResource.AllToList(), "все");
 
             TotalUseDiffFromCCType();
             TotalUseDiffFromNormType();

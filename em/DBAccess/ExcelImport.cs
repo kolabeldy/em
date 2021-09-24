@@ -109,7 +109,7 @@ namespace em.DBAccess
 
                 lastMonthUse.Add(n);
             }
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 using (var transaction = db.BeginTransaction())
@@ -237,7 +237,7 @@ namespace em.DBAccess
             excelEngine.Dispose();
             List<CurrentERUse> currTableUse = new List<CurrentERUse>();
             int reccount = 0;
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string sqlText = "Delete FROM CurrentERUses";
@@ -352,7 +352,7 @@ namespace em.DBAccess
             workbook.Close();
             excelEngine.Dispose();
 
-            using (SqliteConnection db = new SqliteConnection($"Filename={DataAccess.dbpath}"))
+            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
 
