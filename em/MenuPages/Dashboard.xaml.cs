@@ -104,12 +104,11 @@ namespace em.MenuPages
         private double totalLossPrime;
         private double totalProducedSecondary;
         private double totalLossSecondary;
-        //private double totalUse;
         private double totalDiff;
         private double totalCompare;
         private double totalLosses;
 
-        private void SetTotal()
+        private void SetTotalHeader()
         {
             SetTotalUse();
             SetTotalLossPrime();
@@ -119,71 +118,63 @@ namespace em.MenuPages
             SetTotalDiff();
             SetTotalDiffCompare();
             SetTotalLosses();
-        }
-        private void SetTotalUse()
-        {
-            totalPrimeUse = (from o in erUseList
-                             where o.IsERPrime
-                             select new FullFields
-                             {
-                                 FactCost = o.FactCost
-                             }).Sum(m => m.FactCost);
 
-            TotalUse.Content = totalPrimeUse.ToString("N0");
-        }
-        private void SetTotalLossPrime()
-        {
-            totalLossPrime = (from o in lossFactList
-                              where o.IsERPrime
-                              select new FullFields
-                              {
-                                  FactCost = o.FactCost
-                              }).Sum(m => m.FactCost);
+            void SetTotalUse()
+            {
+                totalPrimeUse = (from o in erUseList
+                                 where o.IsERPrime
+                                 select new FullFields
+                                 {
+                                     FactCost = o.FactCost
+                                 }).Sum(m => m.FactCost);
 
-            TotalLossPrime.Content = totalLossPrime.ToString("N0");
-        }
-        private void SetTotalBuy()
-        {
-
-            TotalBuy.Content = (totalPrimeUse + totalLossPrime).ToString("N0");
-        }
-        private void SetTotalProducedSecondary()
-        {
-            double totalUseSecondary = (from o in erUseList
-                                        where !o.IsERPrime
-                                        select new FullFields
-                                        {
-                                            FactCost = o.FactCost
-                                        }).Sum(m => m.FactCost);
-            totalProducedSecondary = totalUseSecondary + totalLossSecondary;
-            TotalProducedSecondary.Content = totalProducedSecondary.ToString("N0");
-        }
-        private void SetTotalLossSecondary()
-        {
-            totalLossSecondary = (from o in lossFactList
-                                  where !o.IsERPrime
+                TotalUse.Content = totalPrimeUse.ToString("N0");
+            }
+            void SetTotalLossPrime()
+            {
+                totalLossPrime = (from o in lossFactList
+                                  where o.IsERPrime
                                   select new FullFields
                                   {
                                       FactCost = o.FactCost
                                   }).Sum(m => m.FactCost);
-            TotalLossSecondary.Content = totalLossSecondary.ToString("N0");
-        }
-        private void SetTotalDiff()
-        {
-            totalDiff = TotalUseDiffFromERType();
-            TotalDiff.Content = totalDiff.ToString("N0");
-        }
-        private void SetTotalDiffCompare()
-        {
-            totalCompare = TotalCompareFromERType();
-            TotalDiffCompare.Content = totalCompare.ToString("N0"); ;
-        }
-        private void SetTotalLosses()
-        {
-            totalLosses = totalLossSecondary + totalLossPrime;
-            TotalLosses.Content = totalLosses.ToString("N0");
-        }
 
+                TotalLossPrime.Content = totalLossPrime.ToString("N0");
+            }
+            void SetTotalBuy()
+            {
+
+                TotalBuy.Content = (totalPrimeUse + totalLossPrime).ToString("N0");
+            }
+            void SetTotalProducedSecondary()
+            {
+                double totalUseSecondary = (from o in erUseList
+                                            where !o.IsERPrime
+                                            select new FullFields
+                                            {
+                                                FactCost = o.FactCost
+                                            }).Sum(m => m.FactCost);
+                totalProducedSecondary = totalUseSecondary + totalLossSecondary;
+                TotalProducedSecondary.Content = totalProducedSecondary.ToString("N0");
+            }
+            void SetTotalLossSecondary()
+            {
+                totalLossSecondary = (from o in lossFactList
+                                      where !o.IsERPrime
+                                      select new FullFields
+                                      {
+                                          FactCost = o.FactCost
+                                      }).Sum(m => m.FactCost);
+                TotalLossSecondary.Content = totalLossSecondary.ToString("N0");
+            }
+            void SetTotalDiff() => TotalDiff.Content = totalDiff.ToString("N0");
+            void SetTotalDiffCompare() => TotalDiffCompare.Content = totalCompare.ToString("N0");
+            void SetTotalLosses()
+            {
+                totalLosses = totalLossSecondary + totalLossPrime;
+                TotalLosses.Content = totalLosses.ToString("N0");
+            }
+        }
         public Dashboard()
         {
             Months = new()
@@ -223,38 +214,6 @@ namespace em.MenuPages
             DataContext = this;
         }
 
-        public void ChartSankeyShow()
-        {
-            List<FullFields> prime = FullFields.UsePrime(FullFields.SelectPeriodList(beginPeriod, endPeriod));
-            List<FullFields> second = FullFields.UseSecondary(FullFields.SelectPeriodList(beginPeriod, endPeriod));
-            double total = prime.Sum(s => s.FactCost) + totalLossPrime;
-            string name23 = "";
-            List<SankeyData> datas = new();
-            foreach (var r in prime)
-            {
-                SankeyData n = new();
-                n.From = "Всего\n" + total.ToString("N0");
-                n.To = r.CCName;
-                if(r.CCName == "ЦЗ-023")
-                {
-                    name23 = n.To;
-                }    
-                n.Weight = r.FactCost;
-                datas.Add(n);
-            }
-            foreach (var r in second)
-            {
-                SankeyData n = new();
-                n.From = name23;
-                n.To = r.CCName;
-                n.Weight = r.FactCost;
-                datas.Add(n);
-            }
-            datas.Add(new SankeyData() { From = "Всего\n" + total.ToString("N0"), To = "потери", Weight = Math.Round(totalLossPrime,0) });
-            datas.Add(new SankeyData() { From = name23, To = "потери", Weight = Math.Round(totalLossSecondary, 0) });
-
-            PanelSankey.Content = new MySankeyChart(datas, "Распределение энергоресурсов");
-        }
 
         private static int RetBeginDynamic(int beginPeriod, int endPeriod)
         {
@@ -272,12 +231,12 @@ namespace em.MenuPages
             lossFactList = FactLosse.ToList(FullFields.SelectPeriodList(beginPeriod, endPeriod));
             diffPeriodList = FullFields.RetUsePeriodFromER(FullFields.SelectPeriodList(RetBeginDynamic(beginPeriod, endPeriod), endPeriod), CostCenter.ActualToList(), EResource.ActualToList(), "все");
 
-            SetTotal();
 
             TotalUseDiffFromCCType();
             TotalUseDiffFromNormType();
             TotalDiffFromPeriod();
-            //TotalCompareFromERType();
+            totalDiff = TotalUseDiffFromERType();
+            totalCompare = TotalCompareFromERType();
             TotalCompareFromCCType();
             TotalCompareFromNormType();
 
@@ -285,8 +244,9 @@ namespace em.MenuPages
             DiffFromCC();
             CompareFromER();
             CompareFromCC();
-            ChartSankeyShow();
 
+            SetTotalHeader();
+            ChartSankeyShow();
 
             string totalType = "";
             totalType = totalDiff >= 0 ? "Перерасход " : "Экономия ";
@@ -411,44 +371,6 @@ namespace em.MenuPages
             }
             TotalDiagramShow(PanelDiffCompareFromNormType, tableData, "по типу нормирования");
         }
-
-
-        //private void TotalLossFromFactNorm()
-        //{
-        //    //tableData.Clear();
-        //    //foreach (var r in FullFields.RetTotalLossFromFactNorm(FullFields.SelectPeriodList(beginPeriod, endPeriod)))
-        //    //{
-        //    //    DataChart n = new();
-        //    //    n.YParam1 = r.FactCost;
-        //    //    n.XParam = r.TotalParamX;
-        //    //    tableData.Add(n);
-        //    //}
-        //    //TotalDiagramFactNormShow(PanelDiffLossFromFactNorm, tableData, "Факт - План");
-        //}
-        //private void TotalLossDiffFromERType()
-        //{
-        //    //tableData.Clear();
-        //    //foreach (var r in FullFields.RetTotalLossDiffFromERType(FullFields.SelectPeriodList(beginPeriod, endPeriod)))
-        //    //{
-        //    //    DataChart n = new();
-        //    //    n.YParam1 = r.DiffCost;
-        //    //    n.XParam = r.TotalParamX;
-        //    //    tableData.Add(n);
-        //    //}
-        //    //TotalDiagramShow(PanelDiffLossFromTypeER, tableData, "");
-        //}
-        //private void UseFromER()
-        //{
-        //    tableData.Clear();
-        //    foreach (var r in erUseList)
-        //    {
-        //        DataChart n = new();
-        //        n.YParam1 = r.FactCost;
-        //        n.XParam = r.IdER.ToString() + " " + r.ERShortName;
-        //        tableData.Add(n);
-        //    }
-        //    PanelUseFromER.Content = new Dashboards.DashboardPieChart(tableData);
-        //}
         private void DiffFromER()
         {
             tableData.Clear();
@@ -460,18 +382,6 @@ namespace em.MenuPages
                 tableData.Add(n);
             }
             DiagramPanelShow(PanelDiffFromER, tableData, "Отклонения от нормативов");
-        }
-        private void UseFromCC()
-        {
-            //tableData.Clear();
-            //foreach (var r in ccUseList)
-            //{
-            //    DataChart n = new();
-            //    n.YParam1 = r.FactCost;
-            //    n.XParam = r.IdCC.ToString();
-            //    tableData.Add(n);
-            //}
-            //PanelUseFromCC.Content = new RowChart(tableData);
         }
         private void DiffFromCC()
         {
@@ -646,6 +556,38 @@ namespace em.MenuPages
             myChart.Show(panel.ActualHeight, panel.ActualWidth);
 
         }
+        public void ChartSankeyShow()
+        {
+            List<FullFields> prime = FullFields.UsePrime(FullFields.SelectPeriodList(beginPeriod, endPeriod));
+            List<FullFields> second = FullFields.UseSecondary(FullFields.SelectPeriodList(beginPeriod, endPeriod));
+            double total = prime.Sum(s => s.FactCost) + totalLossPrime;
+            string name23 = "";
+            List<SankeyData> datas = new();
+            foreach (var r in prime)
+            {
+                SankeyData n = new();
+                n.From = "Всего\n" + total.ToString("N0");
+                n.To = r.CCName;
+                if (r.CCName == "ЦЗ-023")
+                {
+                    name23 = n.To;
+                }
+                n.Weight = r.FactCost;
+                datas.Add(n);
+            }
+            foreach (var r in second)
+            {
+                SankeyData n = new();
+                n.From = name23;
+                n.To = r.CCName;
+                n.Weight = r.FactCost;
+                datas.Add(n);
+            }
+            datas.Add(new SankeyData() { From = "Всего\n" + total.ToString("N0"), To = "потери", Weight = Math.Round(totalLossPrime, 0) });
+            datas.Add(new SankeyData() { From = name23, To = "потери", Weight = Math.Round(totalLossSecondary, 0) });
+
+            PanelSankey.Content = new MySankeyChart(datas, "Распределение энергоресурсов");
+        }
 
         #endregion
 
@@ -675,24 +617,7 @@ namespace em.MenuPages
             Refresh();
         }
 
-        public List<FullFields> RetTotalDiffCompareFromERType(List<Person> dateSel)
-        {
-            List<FullFields> rez = new List<FullFields>();
-            //var qry = from o in erCompareList
-
-            return rez;
-        }
-
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            //Dashboard.GetInstance().Close();
-        }
-
         private void BtnPhoto_Click(object sender, RoutedEventArgs e)
-        {
-            ScreenSave();
-        }
-        private void ScreenSave()
         {
             string destinationPath = null;
             SaveFileDialog dialog = new SaveFileDialog();
