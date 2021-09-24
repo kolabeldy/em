@@ -2,6 +2,7 @@
 using em.Helpers;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace em.Models
 {
@@ -18,26 +19,64 @@ namespace em.Models
         public bool IsActual { get; set; }
         public bool IsSelected { get; set; }
 
-        public static List<Person> AllToList()
+        public static List<EResource> ToList(SelectChoise isActual, SelectChoise isMain, SelectChoise isPrime)
         {
-            List<Person> rez = new List<Person>();
+            string isActualSrt = isActual == SelectChoise.All ? "" : isActual == SelectChoise.True ? " AND IsActual = 1" : " AND IsActual = 0";
+            string isMainStr = isMain == SelectChoise.All ? "" : isMain == SelectChoise.True ? " AND IsMain = 1" : " AND IsMain = 0"; ;
+            string isPrimeStr = isPrime == SelectChoise.All ? "" : isPrime == SelectChoise.True ? " AND isPrime = 1" : " AND isPrime = 0";
+            string whereStr = "WHERE True" + isActualSrt + isMainStr + isPrimeStr;
+
+            List<EResource> rez = new();
+            string SQLtxt = "SELECT IdCode, Name, IsMain, IsActual, IsPrime FROM EResources " + whereStr + " ORDER BY IdCode";
+
             using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
             {
                 db.Open();
-                string SQLtxt = "SELECT IdCode, Name FROM EResources WHERE IsActual ORDER BY IdCode";
                 SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
-
                 SqliteDataReader q = selectCommand.ExecuteReader();
                 while (q.Read())
                 {
-                    Person r = new Person();
-                    r.Id = q.GetInt32(0);
-                    r.Name = q.GetString(1);
-                    rez.Add(r);
+                    rez.Add(new EResource()
+                    {
+                        Id = q.GetInt32(0),
+                        Name = q.GetString(1),
+                        IsMain = q.GetBoolean(2),
+                        IsActual = q.GetBoolean(3),
+                        IsPrime = q.GetBoolean(4)
+                    });
                 }
             }
             return rez;
         }
+        public static List<Person> ActualToList()
+        {
+            List<Person> rez = new();
+            rez.AddRange(from r in ToList(isActual: SelectChoise.True, isMain: SelectChoise.All, isPrime: SelectChoise.All)
+                         select new Person { Id = r.Id, Name = r.Name });
+            return rez;
+        }
+
+
+        //public static List<Person> AllToList()
+        //{
+        //    List<Person> rez = new List<Person>();
+        //    using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+        //    {
+        //        db.Open();
+        //        string SQLtxt = "SELECT IdCode, Name FROM EResources WHERE IsActual ORDER BY IdCode";
+        //        SqliteCommand selectCommand = new SqliteCommand(SQLtxt, db);
+
+        //        SqliteDataReader q = selectCommand.ExecuteReader();
+        //        while (q.Read())
+        //        {
+        //            Person r = new Person();
+        //            r.Id = q.GetInt32(0);
+        //            r.Name = q.GetString(1);
+        //            rez.Add(r);
+        //        }
+        //    }
+        //    return rez;
+        //}
 
         public static List<EResource> ToListAll()
         {

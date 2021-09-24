@@ -50,7 +50,7 @@ namespace em.Models
         {
             List<Person> rez = new ();
             rez.AddRange(from r in ToList(isActual: SelectChoise.True, isMain: SelectChoise.All, isTechnology: SelectChoise.All)
-                         select new Person { Id = r.IdCode, Name = r.Name });
+                         select new Person { Id = r.Id, Name = r.Name });
             return rez;
         }
 

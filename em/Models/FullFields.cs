@@ -558,7 +558,7 @@ namespace em.Models
         {
             List<FullFields> rez = new List<FullFields>();
             string sqlFilterFromPR = prSel == "все" ? "" : prSel == "на производство" ? "AND IsTechnology = 1" : "AND IsTechnology = 0";
-            using (SqliteConnection db = new SqliteConnection($"Filename={Global.dbpath}"))
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
             {
                 db.Open();
                 string SQLtxt = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
