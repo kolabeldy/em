@@ -42,7 +42,7 @@ namespace em.DBAccess
             }
             return rez;
         }
-        public static List<FullFields> RetLosses(ChartDataType argType, List<Person> dateSel, List<Person> erSel)
+            public static List<FullFields> RetLosses(ChartDataType argType, List<Person> dateSel, List<Person> erSel)
         {
             string cType = default;
             if (argType == ChartDataType.FactLoss) cType = "IdER";

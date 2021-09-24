@@ -178,7 +178,7 @@ namespace em.MenuPages
 
         private void CCListFill()
         {
-            CCList = new ObservableCollection<CostCenter>(CostCenter.ToList());
+            CCList = new ObservableCollection<CostCenter>(CostCenter.ToList(isActual: SelectChoise.All, isMain: SelectChoise.All, isTechnology: SelectChoise.All));
         }
 
         private MyRelayCommand addCommand;

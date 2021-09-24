@@ -11,6 +11,7 @@ namespace em
     public enum ChartDataType { ER, CC, FactLoss, Period }
 
     public enum ChartWidthType { Slim, Wide }
+    public enum SelectChoise { All, True, False}
 
     public static class Global
     {
