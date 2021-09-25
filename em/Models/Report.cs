@@ -7,6 +7,8 @@ using Microsoft.Data.Sqlite;
 using em.DBAccess;
 using System.Drawing;
 using System.Linq;
+using em.ServicesPages;
+using System.Threading.Tasks;
 
 namespace em.Models
 {
@@ -180,8 +182,12 @@ namespace em.Models
 
         }
 
-        public static void UniversalForm(int period, int numericStartPozition) // факторный анализ
+        public static async void UniversalForm(int period, int numericStartPozition) // факторный анализ
         {
+            ProcessIndicator ind = ProcessIndicator.GetInstance();
+            ind.Show();
+
+
             List<FullFields> gridData = new List<FullFields>();
             List<FullFields> totalData = new List<FullFields>();
 
@@ -213,7 +219,7 @@ namespace em.Models
 
             Excel.Application ex = new Excel.Application();
             ex.Visible = false;
-            ex.DisplayAlerts = false;
+            ex.DisplayAlerts = true;
 
             ex.Workbooks.Open(AppDomain.CurrentDomain.BaseDirectory + @"УФ_Пофакторный анализ_ЦЗ-000.xltx",
                               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
@@ -222,7 +228,6 @@ namespace em.Models
                               Type.Missing, Type.Missing);
 
             Excel.Worksheet[] arrSheets = new Excel.Worksheet[mainCCList.Count];
-            
             for (int s = 0; s < mainCCList.Count; s++)
             {
                 var sh = ex.Sheets;
@@ -242,7 +247,7 @@ namespace em.Models
                 for (int i = 0; i < arrMainER.Length; i++)
                 {
                     gridData.Clear();
-                    gridData = TableDataFill(mainCCList[s].Id, arrMainER[i]);
+                    await Task.Run(() => TableDataFill(mainCCList[s].Id, arrMainER[i]));
                     if (gridData.Count > 2)
                     {
                         Excel.Range c1 = (Excel.Range)sheet.Cells[stroka0, 1];
@@ -365,18 +370,20 @@ namespace em.Models
                         stroka0 = stroka0 + len1 + 3;
                     }
                 }
+
             }
 
+            ind.Close();
             ex.Visible = true;
             ex.DisplayAlerts = true;
 
-            List<FullFields> TableDataFill(int cc, int er)
+            void TableDataFill(int cc, int er)
             {
                 //gridData.Clear();
-                List<FullFields> data = new();
+                //List<FullFields> data = new();
                 FullFields m = new FullFields();
                 m.ProductName = "Общие причины отклонения";
-                data.Add(m);
+                gridData.Add(m);
 
                 foreach (FullFields r in FullFields.ERUseFromCC(period, cc, er))
                 {
@@ -395,7 +402,7 @@ namespace em.Models
                     nn.Diff = r.Diff;
                     nn.DiffProc = r.Plan != 0 ? (r.Fact - r.Plan) / r.Plan * 100 : r.Fact != 0 ? 999 : 0;
                     nn.Remark = Math.Abs(nn.DiffProc) > 2 ? "*" : "";
-                    data.Add(nn);
+                    gridData.Add(nn);
                 }
 
                 FullFields l = new FullFields();
@@ -404,9 +411,7 @@ namespace em.Models
                 l.Fact = gridData.Sum(n => n.Fact);
                 l.Diff = gridData.Sum(n => n.Diff);
                 l.DiffProc = gridData.Sum(n => n.Plan) != 0 ? gridData.Sum(n => n.Diff) * 100 / gridData.Sum(n => n.Plan) : gridData.Sum(n => n.Fact) != 0 ? 999 : 0;
-                data.Add(l);
-
-                return data;
+                gridData.Add(l);
             }
 
         }
