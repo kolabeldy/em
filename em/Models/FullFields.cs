@@ -404,6 +404,8 @@ namespace em.Models
                 {
                     rez.Add(new FullFields
                     {
+                        IdCC = ccSel,
+                        CCName = q.GetString(3),
                         IdER = q.GetInt32(6),
                         ERName = q.GetString(7),
                         IdProduct = q.GetInt32(12),

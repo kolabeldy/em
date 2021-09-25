@@ -96,8 +96,7 @@ namespace em
                         break;
                     case "ReportFactorAnalysisShow":
                         int period = 202101;
-                        int cc = 56;
-                        Report.UniversalForm(period, cc, 1);
+                        Report.UniversalForm(period, 1);
                         break;
 
                     case "ERShow":
