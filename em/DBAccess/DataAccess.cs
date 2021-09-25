@@ -109,7 +109,7 @@ namespace em.DBAccess
         }
         public static bool SaveDB()
         {
-            string sourcePath = AppDomain.CurrentDomain.BaseDirectory;
+            string sourcePath = AppDomain.CurrentDomain.BaseDirectory + @"DB\";
             string destinationPath = null;
 
             SaveFileDialog dialog = new SaveFileDialog();
@@ -141,7 +141,7 @@ namespace em.DBAccess
         }
         public static bool RestoreDB()
         {
-            string destinationPath = AppDomain.CurrentDomain.BaseDirectory;
+            string destinationPath = AppDomain.CurrentDomain.BaseDirectory + @"DB\";
             string sourceFileName = null;
 
             OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
