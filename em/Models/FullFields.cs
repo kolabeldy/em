@@ -60,6 +60,8 @@ namespace em.Models
         public double dFactCost { get; set; }
         public double FactCorrectedCost { get; set; }
         public string TotalParamX { get; set; }
+        public string Remark { get; set; }
+
         internal static double Sum(Func<object, object> p)
         {
             throw new NotImplementedException();
@@ -379,6 +381,47 @@ namespace em.Models
             }
             return rez;
         }
+        public static List<FullFields> ERUseFromCC(int dateSel, int ccSel, int er)
+        {
+            List<FullFields> rez = new();
+            string sql = "SELECT Period, Kvart, IdCC, CCName, IsCCMain, IsCCTechnology, "
+                            + "IdER, ERName, ERShortName, IsERMain, IsERPrime, UnitName, "
+                            + "IdProduct, ProductName, "
+                            + "SUM(Fact) as Fact, SUM(Plan) as Plan, SUM(Diff) as Diff, SUM(FactCost) as FactCost, SUM(PlanCost) as PlanCost, SUM(DiffCost) as DiffCost, "
+                            + "IsNorm, IsTechnology, Produced "
+                            + "FROM UseAllCosts WHERE NOT(IdCC == 56 AND IdER == 966) "
+                            + "AND Period = " + dateSel.ToString() + " "
+                            + "AND IdCC = " + ccSel.ToString() + " "
+                            + "AND IdER = " + er.ToString() + " "
+                            + "GROUP BY IdProduct "
+                            + "ORDER BY IdProduct";
+            using (SqliteConnection db = new($"Filename={Global.dbpath}"))
+            {
+                db.Open();
+                SqliteCommand selectCommand = new(sql, db);
+                SqliteDataReader q = selectCommand.ExecuteReader();
+                while (q.Read())
+                {
+                    rez.Add(new FullFields
+                    {
+                        IdER = q.GetInt32(6),
+                        ERName = q.GetString(7),
+                        IdProduct = q.GetInt32(12),
+                        ProductName = q.GetString(13),
+                        UnitName = q.GetString(11),
+                        Fact = q.GetDouble(14),
+                        Plan = q.GetDouble(15),
+                        Diff = q.GetDouble(16),
+                        FactCost = q.GetDouble(17),
+                        PlanCost = q.GetDouble(18),
+                        DiffCost = q.GetDouble(19),
+                        DiffProc = q.GetDouble(15) > 0 ? q.GetDouble(16) * 100 / q.GetDouble(15) : 0
+                    });
+                }
+            }
+            return rez;
+        }
+
         public static List<FullFields> RetUsePeriodFromER(List<Person> dateSel, List<Person> ccSel, List<Person> erSel, string prSel)
         {
             List<FullFields> rez = new();

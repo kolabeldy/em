@@ -5,6 +5,8 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using em.DBAccess;
+using System.Drawing;
+using System.Linq;
 
 namespace em.Models
 {
@@ -177,5 +179,227 @@ namespace em.Models
 
 
         }
+
+        public static void UniversalForm(int period, int cc, int numericStartPozition)
+        {
+            List<FullFields> gridData = new List<FullFields>();
+            List<FullFields> totalData = new List<FullFields>();
+
+
+            int len2 = 5;
+            string[] arrHeaders = new string[10];
+            arrHeaders[0] = "Продукт";
+            arrHeaders[1] = "Факт";
+            arrHeaders[2] = "План";
+            arrHeaders[3] = "Откл.";
+            arrHeaders[4] = "Откл.%";
+            arrHeaders[5] = "Пр.";
+            arrHeaders[6] = "Классификатор";
+            arrHeaders[7] = "Признак";
+            arrHeaders[8] = "Отклонение";
+            arrHeaders[9] = "Пояснение причины отклонения от РНЭ/лимитов";
+
+
+            List<EResource> qry = EResource.ToList(isActual: SelectChoise.True, isMain: SelectChoise.True, isPrime: SelectChoise.All);
+            int[] arrMainER = new int[qry.Count];
+            int e = 0;
+            foreach (var r in qry)
+            {
+                arrMainER[e] = r.Id;
+                e++;
+            }
+
+            Excel.Application ex = new Excel.Application();
+
+            ex.Workbooks.Open(AppDomain.CurrentDomain.BaseDirectory + @"УФ_Пофакторный анализ_ЦЗ-000.xltx",
+                              Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                              Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                              Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                              Type.Missing, Type.Missing);
+
+            ex.Visible = false;
+            ex.DisplayAlerts = false;
+
+            Excel.Worksheet sheet = (Excel.Worksheet)ex.Worksheets.get_Item(1);
+            Excel.Worksheet sheet1 = (Excel.Worksheet)ex.Worksheets.get_Item(2);
+
+            sheet.Name = cc.ToString();
+            int stroka0 = 4;
+
+            for (int i = 0; i < arrMainER.Length; i++)
+            {
+                Table1DataFill(arrMainER[i]);
+                if (gridData.Count > 2)
+                {
+                    Excel.Range c1 = (Excel.Range)sheet.Cells[stroka0, 1];
+                    Excel.Range c2 = (Excel.Range)sheet.Cells[stroka0, len2 + 5];
+                    Excel.Range rangeCaption = sheet.get_Range(c1, c2);
+                    rangeCaption.Value = arrHeaders;
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 - 1, 1];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 - 1, 1];
+                    Excel.Range range1 = sheet.get_Range(c1, c2);
+                    range1.Value = gridData[1].ERName + ", " + gridData[1].UnitName;
+                    range1.Cells.Font.Bold = true;
+                    range1.Cells.Font.Size = 12;
+                    range1.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(0xFF, 0xFF, 0xCC));
+
+                    range1.Borders.get_Item(Excel.XlBordersIndex.xlEdgeBottom).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range1.Borders.get_Item(Excel.XlBordersIndex.xlEdgeRight).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range1.Borders.get_Item(Excel.XlBordersIndex.xlInsideHorizontal).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range1.Borders.get_Item(Excel.XlBordersIndex.xlInsideVertical).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range1.Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
+
+
+                    rangeCaption.Borders.get_Item(Excel.XlBordersIndex.xlEdgeBottom).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    rangeCaption.Borders.get_Item(Excel.XlBordersIndex.xlEdgeRight).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    rangeCaption.Borders.get_Item(Excel.XlBordersIndex.xlInsideHorizontal).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    rangeCaption.Borders.get_Item(Excel.XlBordersIndex.xlInsideVertical).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    rangeCaption.Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    rangeCaption.Cells.Font.Bold = true;
+                    rangeCaption.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(220, 220, 220));
+
+                    int j = 0;
+                    object[,] arr = new object[gridData.Count, 6];
+                    foreach (FullFields r in gridData)
+                    {
+                        arr[j, 0] = r.ProductName;
+                        arr[j, 1] = r.Fact;
+                        arr[j, 2] = r.Plan;
+                        arr[j, 3] = r.Diff;
+                        arr[j, 4] = r.DiffProc;
+                        arr[j, 5] = r.Remark;
+                        j++;
+                    }
+                    int len1 = arr.GetLength(0);
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 1];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, len2 + 1];
+                    Excel.Range range = sheet.get_Range(c1, c2);
+                    range.Value = arr;
+
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, len2 + 5];
+                    range = sheet.get_Range(c1, c2);
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeBottom).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeLeft).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeRight).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlInsideHorizontal).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlInsideVertical).LineStyle = Excel.XlLineStyle.xlContinuous;
+                    range.Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 2];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, len2 + 5];
+                    range = sheet.get_Range(c1, c2);
+                    range.EntireColumn.AutoFit();
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 1];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + 1, 1];
+                    range = sheet.get_Range(c1, c2);
+                    range.EntireColumn.ColumnWidth = 40;
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, numericStartPozition];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, len2];
+                    range = sheet.get_Range(c1, c2);
+                    range.NumberFormat = "#,0.00";
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 2];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + 1, 5];
+                    range = sheet.get_Range(c1, c2);
+                    range.Value = "";
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + len1, 1];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, len2 + 5];
+                    range = sheet.get_Range(c1, c2);
+                    range.Cells.Font.Bold = true;
+                    range.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(240, 240, 240));
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 7];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, 7];
+                    range = sheet.get_Range(c1, c2);
+
+                    range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, "=Классификатор!$F$2:$F$26");
+                    range.Validation.InCellDropdown = true;
+                    range.EntireColumn.ColumnWidth = 36;
+                    range.WrapText = true;
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 8];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, 8];
+                    range = sheet.get_Range(c1, c2);
+
+                    range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, "=Классификатор!$F$27:$F$30");
+                    range.Validation.InCellDropdown = true;
+                    range.EntireColumn.ColumnWidth = 18;
+                    range.WrapText = true;
+
+                    c1 = (Excel.Range)sheet.Cells[stroka0 + 1, 10];
+                    c2 = (Excel.Range)sheet.Cells[stroka0 + len1, 10];
+                    range = sheet.get_Range(c1, c2);
+                    range.WrapText = true;
+
+                    string form = "= ";
+                    string adder = "";
+                    for (int k = 1; k < len1; k++)
+                    {
+                        c1 = (Excel.Range)sheet.Cells[stroka0 + k, 9];
+                        c2 = (Excel.Range)sheet.Cells[stroka0 + k, 9];
+                        range = sheet.get_Range(c1, c2);
+                        adder = range.get_Address(1, 1, Excel.XlReferenceStyle.xlA1, Type.Missing, Type.Missing);
+                        form = form + " + " + adder;
+                    }
+                    Excel.Range rr = sheet.Cells[stroka0 + len1, 9] as Excel.Range;
+                    rr.Formula = form;
+                    rr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(0xFF, 0xFF, 0xCC));
+
+                    c1 = (Excel.Range)sheet.Cells[1, 1];
+                    c2 = (Excel.Range)sheet.Cells[1, 1];
+
+                    Excel.Range rangeCapt = sheet.get_Range(c1, c2);
+                    rangeCapt.Value = "Пофакторный анализ отклонений от расходных норм/лимитов по ЦЗ-" + cc + "  за период: " + period; // gridData[1].Period;
+                    rangeCapt.Cells.Font.Bold = true;
+                    rangeCapt.Cells.Font.Size = 14;
+                    stroka0 = stroka0 + len1 + 3;
+                }
+                ex.Visible = true;
+                ex.DisplayAlerts = true;
+
+            }
+            void Table1DataFill(int er)
+            {
+                    gridData.Clear();
+                    FullFields m = new FullFields();
+                    m.ProductName = "Общие причины отклонения";
+                    gridData.Add(m);
+
+                foreach (FullFields r in FullFields.ERUseFromCC(period, cc, er))
+                    {
+                        FullFields nn = new();
+                        nn.Period = r.Period;
+                        nn.IdCC = r.IdCC;
+                        nn.CCName = r.IdCC.ToString();
+                        nn.IdER = r.IdER;
+                        nn.ERName = r.ERName;
+                        nn.UnitName = r.UnitName;
+                        nn.ProductName = r.ProductName.Trim();
+                        nn.Year = r.Year;
+                        nn.Month = r.Month;
+                        nn.Plan = r.Plan;
+                        nn.Fact = r.Fact;
+                        nn.Diff = r.Diff;
+                        nn.DiffProc = r.Plan != 0 ? (r.Fact - r.Plan) / r.Plan * 100 : r.Fact != 0 ? 999 : 0;
+                        nn.Remark = Math.Abs(nn.DiffProc) > 2 ? "*" : "";
+                        gridData.Add(nn);
+                    }
+
+                    FullFields l = new FullFields();
+                    l.ProductName = "ИТОГО:";
+                    l.Plan = gridData.Sum(n => n.Plan);
+                    l.Fact = gridData.Sum(n => n.Fact);
+                    l.Diff = gridData.Sum(n => n.Diff);
+                    l.DiffProc = gridData.Sum(n => n.Plan) != 0 ? gridData.Sum(n => n.Diff) * 100 / gridData.Sum(n => n.Plan) : gridData.Sum(n => n.Fact) != 0 ? 999 : 0;
+                    gridData.Add(l);
+
+            }
+
+        }
+
     }
 }
