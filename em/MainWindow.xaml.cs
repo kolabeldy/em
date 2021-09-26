@@ -96,7 +96,7 @@ namespace em
                         rez = Report.ReportMonthShow();
                         break;
                     case "ReportFactorAnalysisShow":
-                        new ReportMonth().Show();
+                        new ReportDateFilter().Show();
                         break;
 
                     case "ERShow":

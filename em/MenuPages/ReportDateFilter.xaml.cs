@@ -11,7 +11,7 @@ namespace em.MenuPages
     /// <summary>
     /// Логика взаимодействия для PageTariffsEdit.xaml
     /// </summary>
-    public partial class ReportMonth : Window, INotifyPropertyChanged
+    public partial class ReportDateFilter : Window, INotifyPropertyChanged
     {
         public class PeriodId
         {
@@ -45,7 +45,7 @@ namespace em.MenuPages
 
         public int beginPeriod;
 
-        public ReportMonth()
+        public ReportDateFilter()
         {
             Months = new()
             {

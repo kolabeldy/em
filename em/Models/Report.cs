@@ -187,11 +187,7 @@ namespace em.Models
         {
             ProcessIndicator ind = ProcessIndicator.GetInstance();
             ind.Show();
-            //int period = 202106;
             int numericStartPozition = 1;
-            //ReportMonth report = new ReportMonth();
-            //report.Show();
-            //period = report.beginPeriod;
 
             List<FullFields> gridData = new List<FullFields>();
             List<FullFields> totalData = new List<FullFields>();
