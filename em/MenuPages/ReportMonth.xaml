@@ -5,19 +5,82 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:em"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    Height="570"
-    Width="700"
+    Height="220"
+    Width="600"
     FontSize="12"
-    mc:Ignorable="d" Title="Отчёт за период" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid >
-        <Border
-            Margin="20"
-            Padding="20"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            BorderBrush="#FF149EA0"
-            BorderThickness="3">
+    mc:Ignorable="d" Title="Отчёт за период" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None">
+    <Border
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        BorderBrush="{StaticResource PrimaryHueMidBrush}"
+        BorderThickness="4">
+        <StackPanel>
+            <StackPanel 
+                Orientation="Horizontal"
+                Margin="0,20,0,40"
+                HorizontalAlignment="Center">
+                <TextBlock 
+                    FontSize="20"
+                    VerticalAlignment="Center"
+                    Margin="20,0"
+                    Text="Отчёт за период:" />
+                <ComboBox 
+                    x:Name="cbMonthStart"
+                    Width="80"
+                    FontSize="16"
+                    MaxDropDownHeight="600"
+                    VerticalAlignment="Bottom"
+                    Margin="0, 0, 0, 2"
+                    Style="{StaticResource MaterialDesignComboBox}"
+                    ItemsSource="{Binding Months}" 
+                    DisplayMemberPath="Name"
+                    HorizontalContentAlignment="Center"
+                    SelectedItem="{Binding MonthStart, Mode=TwoWay}"  />
+                <ComboBox 
+                    x:Name="cbYearStart"
+                    Width="80"
+                    FontSize="16"
+                    MaxDropDownHeight="600"
+                    VerticalAlignment="Bottom"
+                    Margin="10, 0, 0, 2"
+                    Style="{StaticResource MaterialDesignComboBox}"
+                    ItemsSource="{Binding Years}" 
+                    DisplayMemberPath="Name"
+                    HorizontalContentAlignment="Center"
+                    SelectedItem="{Binding YearStart, Mode=TwoWay}"  />
 
-        </Border>
-    </Grid>
+            </StackPanel>
+            <!--<StackPanel 
+                x:Name="Indicator"
+                Visibility="Hidden"
+                Height="150">
+                <TextBlock 
+                    Margin="20,30,0,0"
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    Text="Процесс займёт значительное время."  />
+                <TextBlock 
+                    Margin="20,5,20,20"
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    Text="Необходимо дождаться появления окна Excel"  />
+
+                <ProgressBar 
+                    HorizontalAlignment="Stretch" 
+                    Margin="40,20"
+                    Height="15" 
+                    VerticalAlignment="Center" 
+                    IsIndeterminate="True"/>
+            </StackPanel>-->
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Center"
+                Height="100">
+                <Button Margin="20" Width="120" Content="Начать" Click="Button_Click_1" />
+                <Button Margin="20" Width="120" Content="Отказаться" Click="Button_Click" />
+
+            </StackPanel>
+        </StackPanel>
+
+    </Border>
 </Window>

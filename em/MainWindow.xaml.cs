@@ -96,8 +96,7 @@ namespace em
                         rez = Report.ReportMonthShow();
                         break;
                     case "ReportFactorAnalysisShow":
-                        int period = 202101;
-                        Report.UniversalForm(period, 1);
+                        new ReportMonth().Show();
                         break;
 
                     case "ERShow":
